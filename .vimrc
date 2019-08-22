@@ -5,6 +5,8 @@
 " pip install autopep8
 """"""""""""""""""""""""""""""""""""""""""""""""""""
 """"""""""""""""""""""""PEP8""""""""""""'"
+set t_Co=256
+set term=xterm-256color
 set nocompatible              " required
 filetype off                  " required
 
@@ -65,6 +67,7 @@ Plugin 'Chiel92/vim-autoformat'  "코드 포매터
 Plugin 'scrooloose/nerdcommenter' "Quick주석처리
 Plugin 'christoomey/vim-tmux-navigator' "vim-tmux 이동
 Plugin 'simeji/winresizer'       "vim split resizer
+Plugin 'wakatime/vim-wakatime'   "WAKA TIME
 "Plugin 'rainglow/vim'
 "Plugin 'altercation/vim-colors-solarized'
 "Plugin 'lifepillar/vim-solarized8'
