@@ -67,6 +67,7 @@ Plugin 'christoomey/vim-tmux-navigator' "vim-tmux 이동
 Plugin 'simeji/winresizer'       "vim split resizer
 Plugin 'NLKNguyen/papercolor-theme'
 Plugin 'vim-python/python-syntax'
+Plugin 'Lokaltog/vim-easymotion' "한화면에서 커서이동
 "Plugin 'rainglow/vim'
 "Plugin 'altercation/vim-colors-solarized'
 "Plugin 'lifepillar/vim-solarized8'
@@ -235,4 +236,27 @@ vnoremap <c-w> <Esc>:w<CR> " visual mode: escape to normal and save
 """"""""""""""" NERDComment """"""""'
 map <C-_> :call NERDComment("n", "Sexy")<CR>
 map <C-\> :call NERDComment("n", "Uncomment")<CR>
+""""""""""""""" vim easymotion """"""""""""
+" <Leader>f{char} to move to {char}
+map  <Leader>f <Plug>(easymotion-bd-f)
+nmap <Leader>f <Plug>(easymotion-overwin-f)
 
+" s{char}{char} to move to {char}{char}
+nmap s <Plug>(easymotion-overwin-f2)
+
+" Move to line
+map <Leader>L <Plug>(easymotion-bd-jk)
+nmap <Leader>L <Plug>(easymotion-overwin-line)
+
+" Move to word
+map  <Leader>w <Plug>(easymotion-bd-w)
+nmap <Leader>w <Plug>(easymotion-overwin-w)
+
+map  / <Plug>(easymotion-sn)
+omap / <Plug>(easymotion-tn)
+
+" These `n` & `N` mappings are options. You do not have to map `n` & `N` to EasyMotion.
+" Without these mappings, `n` & `N` works fine. (These mappings just provide
+" different highlight method and have some other features )
+map  n <Plug>(easymotion-next)
+map  N <Plug>(easymotion-prev)
