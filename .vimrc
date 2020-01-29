@@ -2,7 +2,8 @@
 " 구름입력기 한글입력 편의성 
 " brew install the_silver_searcher , vimgrep 너무 느려서 컨텐츠검색필요
 " youcompleteme 설치후 cmake install 필요 및 서버재실행 필요
-" pip install autopep8
+" pip install flake8, autopep8
+" flake8 = linter, autopep8 = fixer
 """"""""""""""""""""""""""""""""""""""""""""""""""""
 """"""""""""""""""""""""PEP8""""""""""""'"
 set t_Co=256
@@ -39,6 +40,15 @@ au BufNewFile,BufRead *.py
     \ set autoindent|
     \ set fileformat=unix
 
+au BufNewFile,BufRead *.md
+    \ set tabstop=4|
+    \ set softtabstop=4|
+    \ set shiftwidth=4|
+    \ set textwidth=120|
+    \ set expandtab|
+    \ set autoindent|
+    \ set fileformat=unix
+
 """"""""""""""""""""""''" Django Vim Setting""""""""""""""""""""""''"
 let g:last_relative_dir = ''
 """""""""""""""""""""""""""VUNDLE"""""""""""""""""""
@@ -49,50 +59,27 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'tmhedberg/SimpylFold'
 Plugin 'vim-scripts/indentpython.vim'
 Plugin 'valloric/youcompleteme'
-Plugin 'vim-syntastic/syntastic'
-Plugin 'nvie/vim-flake8'
 Plugin 'chriskempson/base16-vim'
 Plugin 'vim-airline/vim-airline' "작업표시줄
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'tpope/vim-fugitive'      "작업표시줄 git track
 Plugin 'airblade/vim-gitgutter'  "작업표시줄 git 변경사항 표시
-Plugin 'kien/ctrlp.vim'
 Plugin 'junegunn/fzf'
 Plugin 'gabesoft/vim-ags'
-Plugin 'Chiel92/vim-autoformat'  "코드 포매터
-"Plugin 'w0rp/ale'                "코드문법체크
-Plugin 'scrooloose/nerdtree'
+"Plugin 'psf/black'               "파이썬 코드컨벤션
+Plugin 'nvie/vim-flake8'          "파이썬 코드컨벤션
+Plugin 'dense-analysis/ale'      "코드 문법체크
+Plugin 'chiel92/vim-autoformat'  "Auto formatter
+Plugin 'scrooloose/nerdtree'     "탐색트리
 Plugin 'scrooloose/nerdcommenter' "Quick주석처리
 Plugin 'christoomey/vim-tmux-navigator' "vim-tmux 이동
+
 Plugin 'simeji/winresizer'       "vim split resizer
-Plugin 'NLKNguyen/papercolor-theme'
 Plugin 'vim-python/python-syntax'
 Plugin 'Lokaltog/vim-easymotion' "한화면에서 커서이동
-"Plugin 'rainglow/vim'
-"Plugin 'altercation/vim-colors-solarized'
-"Plugin 'lifepillar/vim-solarized8'
-"Plugin 'daylerees/colour-schemes'
-"Plugin 'vim-vdebug/vdebug'       "코드 디버거
 
 call vundle#end()            " required
 filetype plugin indent on    " required
-
-""""""""""""""""""""""""""CtrlP""""""""""""""""""
-" 자동완성
-"  파일찾기 ctrlp 속도향상을 위한 특정디렉토리 무시
-
-"map ff :CtrlP<.><cr>
-
-"let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
-"if executable('ag')
-    "let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-"endif
-
-"set wildignore+=*/tmp/*,*__pycache__*,*.so,*.swp,*.zip,*.pyc,*.exe,*.dll
-"let g:ctrlp_custom_ignore = {
-  "\ 'dir':  '\v[\/]\.(git|hg|svn|__pycache__)$',
-  "\ 'file': '\v\.(exe|so|dll|pyc)$'
-  "\ }
 
 """""""""""""SPLIT WINDOW""""""""""""
 set splitbelow
@@ -122,8 +109,8 @@ let g:ycm_filetype_whitelist = {
 			\ "python":1,
 			\ }
 let g:ycm_semantic_triggers = { 'python': [ 're!\w{2}' ] }
-"""""""""""""""""""""""CTAGS"""""""""""""""""""""""
-"set tags=/Users/cjy/project/api/29cm/tags 
+let g:ycm_server_python_interpreter = "/usr/local/bin/python3"
+
 """"""""""""""""""""""NERDTREE""""""""""""""""
 let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
@@ -143,7 +130,6 @@ set number
 set cursorline
 "
 " 컬러 스킴 사용
-"colorscheme PaperColor
 set background=dark
 "colorscheme base16-3024
 colorscheme base16-onedark
@@ -189,8 +175,11 @@ set rtp+=~/.fzf
 
 "nnoremap <silent> <C-f> (expand('%') =~ 'NERD_tree' ? "\<c-w>\<c-w>" : '').":FZF\<cr>"
 au BufEnter * if bufname('#') =~ 'NERD_tree' && bufname('%') !~ 'NERD_tree' && winnr('$') > 1 | b# | exe "normal! \<c-w>\<c-w>" | :blast | endif
-
 map ff :FZF<cr>
+let $FZF_DEFAULT_COMMAND='ag -g ""'
+
+let $FZF_DEFAULT_COMMAND='ag --ignore "*.pyc" -g ""'
+let $FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 """""""""""""""""""GIT GDIFF""""""""""""""""""""
 "nmap <C-0> :Gwrite!<CR>
 nmap d2 :diffget //2<Cr>
@@ -200,22 +189,23 @@ nmap d3 :diffget //3<Cr>
 nnoremap <expr> <S-I> &diff ? '[c' : '<C-W>k'
 nnoremap <expr> <S-U> &diff ? ']c' : '<C-W>j'
 
-""""""""""""""""FORMATTER""""""""""""""""""
+"""""""""""""""""ALE"""""""""""""""""""
+" Check Python files with flake8 and pylint.
+let g:ale_linters = {'javascript': ['eslint', 'flow'], 'python':['flake8']}
+" Fix Python files with autopep8 and yapf.
+"let g:ale_fixers = {'javascript': ['eslint', 'flow'], 'python':['black']}
+let g:ale_fixers = {'javascript': ['eslint', 'flow'], 'python':['flake8']}
+" Disable warnings about trailing whitespace for Python files.
+let b:ale_warn_about_trailing_whitespace = 0
+
+"""""""""""""""BLACK""""""""""""""""""""""""""""""""
 noremap <F3> :Autoformat<CR>
-""""""""""""""""FLAK8"""""""""""""""""""""
 autocmd FileType python map <buffer> <F8> :call flake8#Flake8()<CR>
-""""""""""""""""""SYNTASTIC"""""""""""
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
- 
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_quiet_messages = { 'regex': 'W391' } "Ignore blank line end of page
+"let g:black_linelength=120
+
 """"""""""""""""FAST WINDOW RESIZER""""""""""""""""""""
 let g:winresizer_gui_enable = 1
+
 """"""""""""""""AGS""""""""""""""
 map fa :Ags<CR>
 nnoremap <Leader>a :Ags<Space>
@@ -236,7 +226,7 @@ vnoremap <c-w> <Esc>:w<CR> " visual mode: escape to normal and save
 """"""""""""""" NERDComment """"""""'
 map <C-_> :call NERDComment("n", "Sexy")<CR>
 map <C-\> :call NERDComment("n", "Uncomment")<CR>
-""""""""""""""" vim easymotion """"""""""""
+"""""""""""""" vim easymotion """"""""""""
 " <Leader>f{char} to move to {char}
 map  <Leader>f <Plug>(easymotion-bd-f)
 nmap <Leader>f <Plug>(easymotion-overwin-f)
@@ -260,3 +250,6 @@ omap / <Plug>(easymotion-tn)
 " different highlight method and have some other features )
 map  n <Plug>(easymotion-next)
 map  N <Plug>(easymotion-prev)
+
+
+nnoremap <silent> <C-z> :RemoveIndicator<CR>:suspend<bar>:SetupIndicator<CR>
