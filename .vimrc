@@ -19,7 +19,7 @@ set visualbell
 
 set warn "저장안하고 종료시 경고
 set sm "show match
-set colorcolumn=120
+"set colorcolumn=120
 
 set noswapfile "swp 파일 미생성
 set autoread "파일갱신시 자동갱신
@@ -44,7 +44,6 @@ au BufNewFile,BufRead *.md
     \ set tabstop=4|
     \ set softtabstop=4|
     \ set shiftwidth=4|
-    \ set textwidth=120|
     \ set expandtab|
     \ set autoindent|
     \ set fileformat=unix
@@ -59,11 +58,13 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'tmhedberg/SimpylFold'
 Plugin 'vim-scripts/indentpython.vim'
 Plugin 'valloric/youcompleteme'
+
+Plugin 'django.vim'
 Plugin 'chriskempson/base16-vim'
-Plugin 'vim-airline/vim-airline' "작업표시줄
-Plugin 'vim-airline/vim-airline-themes'
+"Plugin 'vim-airline/vim-airline' "작업표시줄
+"Plugin 'vim-airline/vim-airline-themes'
 Plugin 'tpope/vim-fugitive'      "작업표시줄 git track
-Plugin 'airblade/vim-gitgutter'  "작업표시줄 git 변경사항 표시
+"Plugin 'airblade/vim-gitgutter'  "작업표시줄 git 변경사항 표시
 Plugin 'junegunn/fzf'
 Plugin 'gabesoft/vim-ags'
 "Plugin 'psf/black'               "파이썬 코드컨벤션
@@ -235,8 +236,8 @@ nmap <Leader>f <Plug>(easymotion-overwin-f)
 nmap s <Plug>(easymotion-overwin-f2)
 
 " Move to line
-map <Leader>L <Plug>(easymotion-bd-jk)
-nmap <Leader>L <Plug>(easymotion-overwin-line)
+map <Leader>l <Plug>(easymotion-bd-jk)
+nmap <Leader>l <Plug>(easymotion-overwin-line)
 
 " Move to word
 map  <Leader>w <Plug>(easymotion-bd-w)
@@ -253,3 +254,7 @@ map  N <Plug>(easymotion-prev)
 
 
 nnoremap <silent> <C-z> :RemoveIndicator<CR>:suspend<bar>:SetupIndicator<CR>
+
+
+
+
