@@ -42,11 +42,11 @@
   default_position = 'top'
   default_height = 30
 
-[[layers]]
-  name = "lang#python"
-  format_on_save = 1
-  enable_typeinfo = true
-
+# [[layers]]
+  # name = "lang#python"
+  # format_on_save = 1
+  # enable_typeinfo = true
+#
 [[layers]]
   name = "fzf"
 
@@ -68,10 +68,10 @@
   on_cmd = ["ColorHighlight", "ColorToggle"]
   merged = false
 
-[[custom_plugins]]
-  name = "vim-python/python-syntax"
-  merged = false
-
+# [[custom_plugins]]
+  # name = "vim-python/python-syntax"
+  # merged = false
+#
 [[custom_plugins]]
   name = 'tmhedberg/simpylfold'
   on_ft = ['python']

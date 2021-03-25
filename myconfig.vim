@@ -1,12 +1,12 @@
 function! myconfig#before() abort
-  let g:python_highlight_all = 1
-  let g:python3_host_prog = expand('/Users/cjy/.pyenv/versions/3.6.8/bin/python3')
+"  let g:python_highlight_all = 1
+"  let g:python3_host_prog = expand('/Users/cjy/.pyenv/versions/3.6.8/bin/python3')
   map <F4> :NERDTreeFind<cr>
-
-  "let g:neomake_python_enabled_makers = ['flake8']
-  let g:neoformat_enabled_python = ['autopep8', 'yapf']
-  "let g:neoformat_verbose = 1
-
+"
+"  "let g:neomake_python_enabled_makers = ['flake8']
+"  "let g:neoformat_enabled_python = ['autopep8', 'yapf']
+"  "let g:neoformat_verbose = 1
+"
   " SimplyFold 
   set nofoldenable
 endfunction
